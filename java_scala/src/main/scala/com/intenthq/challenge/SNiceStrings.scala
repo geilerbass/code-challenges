@@ -1,5 +1,7 @@
 package com.intenthq.challenge
 
+import scala.util.matching.Regex
+
 object SNiceStrings {
 
 // From http://adventofcode.com/day/5
@@ -21,5 +23,29 @@ object SNiceStrings {
 //    dvszwmarrgswjxmb is naughty because it contains only one vowel.
 //    How many strings are nice?
 
-  def nice(xs: List[String]): Int = ???
+  def nice(xs: List[String]): Int = {
+    val booleans = xs.map(isANiceString)
+    booleans.count(_ == true)
+  }
+
+  private def isANiceString: String => Boolean = { s: String =>
+    def hasNVowels(n: Int) = { s: String =>
+      val r : Regex = "[aeiou]".r
+      val size = r.findAllMatchIn(s.toLowerCase).size
+      size >= n
+    }
+
+    def hasNRepeated(n: Int) = { s: String =>
+      s.toCharArray.sliding(n).exists {
+        case Array(x, y) => x == y
+      }
+    }
+
+    def doesNotContain(strings: List[String]) = { s: String =>
+      !strings.map(_.r.findFirstMatchIn(s)).exists(_.isDefined)
+    }
+
+    val validations = List(hasNVowels(3), hasNRepeated(2), doesNotContain(List("ab", "cd", "pq", "xy")))
+    validations.foldLeft(true)((x, y) => y.apply(s) && x)
+  }
 }
