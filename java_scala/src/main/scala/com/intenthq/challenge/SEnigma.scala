@@ -22,6 +22,15 @@ object SEnigma {
   // Following the above rules, the message would be: “1N73N7 HQ”
   // Check the tests for some other (simpler) examples.
 
+  /**
+   * Note on solution
+   *
+   * This solution uses the assumption that dictionary entry values will never be numeric, as is the case in the
+   * description and the provided test cases. If translated values were to include numeric characters, the solution
+   * would need to take a different approach.
+   *
+   */
+
   def decipher(map: Map[Int, Char])(message: List[Int]): String = {
 
     def orderByStringDescThenIntAsc = {
